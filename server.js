@@ -29,6 +29,7 @@ app.get("*", (req, res) =>
     res.sendFile(path.join(__dirname, '/Develop/public/index.html'))
 );
 
+// Lets us know things are connected
 app.listen(PORT, () => 
     console.log(`App listening at http://localhost:${PORT}`)
 );
