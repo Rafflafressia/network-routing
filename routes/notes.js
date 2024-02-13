@@ -3,7 +3,7 @@ const express = require('express')
 const fs = require("fs");
 const uuid = require("uuid");
 const router = express.Router(); 
-const notes = require('./Develop/db/db.json'); // representation of the notes object data
+let notes = require('../db/db.json'); // representation of the notes object data
 
 // GET request to get all the notes
 router.get("/", (req, res) => {
@@ -28,3 +28,35 @@ router.get("/:id", (req, res) => {
         });
     }
 });
+
+router.post("/", (req, res)=> {
+    const { title, text } = req.body;
+
+    const newNote = {
+        title,
+        text,
+        id: uuid.v4(),
+    };
+    
+    if( title && text ){
+        
+        notes.push(newNote);
+
+        fs.writeFile('./db/db.json', JSON.stringify(notes), (err) =>{
+            if (err){
+                console.log("Error writing", err);
+            }
+            {
+                console.log("Data has been written to the file");
+            }
+        });
+
+        res.json(notes);
+        
+    } else {
+        res.json('Error in posting new note.');
+    }
+});
+
+module.exports = router;
+
